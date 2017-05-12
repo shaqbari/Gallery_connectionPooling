@@ -1,4 +1,24 @@
+<%@page import="Common.file.FileManager"%>
+<%@page import="gallery.model.Gallery"%>
+<%@page import="gallery.model.GalleryDAO"%>
 <%@ page contentType="text/html;charset=utf-8"%>
+<%!
+	GalleryDAO dao=new GalleryDAO();
+%>
+<%
+	Gallery gallery=dao.select(Integer.parseInt(request.getParameter("gallery_id")));
+	
+	int gallery_id=gallery.getGallery_id();
+	String writer=gallery.getWriter();
+	String title=gallery.getTitle();
+	String content=gallery.getContent();
+	
+	String ext=FileManager.getExt(gallery.getUser_filename());
+	
+	String fileName="/data/"+gallery.getGallery_id()+"."+ext;	
+
+%>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -24,9 +44,25 @@ background:url("/board/images/write_bg.gif");
 border:#C3C3C3 1px solid 
 }
 #copyright{font-size:9pt;}
+
+#image{
+	width:100%;/* div에 맞게 자동으로 크기를 맞춰준다. */
+	
+}
 a{text-decoration:none}
 img{border:0px}
 </style>
+
+<script>
+	function del(){
+		if(confirm("삭제하시겠습니까?")){
+			location.href="/board/delete.jsp?gallery_id=<%=gallery_id%>&ext=<%=ext%>";
+			/* location.submit(); 여기선 주소에 표시했으므로 submit안해도 된다.*/
+		}
+		
+	}
+</script>
+
 </head>
 <body>
 <table id="box" align="center" width="603" border="0" cellpadding="0" cellspacing="0">
@@ -47,15 +83,19 @@ img{border:0px}
           </tr>
           <tr id="writer">
             <td height="25" align="center">작성자</td>
-            <td><input type="text" name="textfield"></td>
+            <td><input type="text" name="textfield" value="<%=writer %>"></td>
           </tr>
           <tr id="title">
             <td height="25" align="center">제목</td>
-            <td><input type="text" name="textfield2"></td>
+            <td><input type="text" name="textfield2" value="<%=title %>"></td>
           </tr>
           <tr id="content">
             <td align="center">내용</td>
-            <td><textarea name="content" style=""></textarea></td>
+            <td><textarea name="content" style=""><%=content %></textarea></td>
+          </tr>
+          <tr id="content">
+            <td align="center">이미지</td>
+            <td> <img id="image" src="<%=fileName%>"/> </td>
           </tr>
           <tr>
             <td>&nbsp;</td>
@@ -65,8 +105,10 @@ img{border:0px}
 	</tr>
   <tr>
     <td height="30" align="right" style="padding-right:2px;">
-	<img src="/board/images/write_btin.gif" width="61" height="20">
-	<img src="/board/images/delete_btn.gif" width="61" height="20"> <a href="list.html"><img src="/board/images/list_btn.gif" width="61" height="20" border="0"></a> </td>
+	<img src="/board/images/write_btin.gif" width="61" height="20">	
+	<img src="/board/images/delete_btn.gif" width="61" height="20" onclick="del()">	
+	
+	<a href="list.jsp"><img src="/board/images/list_btn.gif" width="61" height="20" border="0"></a> </td>
   </tr>
   <tr>
     <td height="1" bgcolor="#CCCCCC"></td>

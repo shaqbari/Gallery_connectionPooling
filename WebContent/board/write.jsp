@@ -5,27 +5,27 @@
 <title>Untitled Document</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style>
-#box{border:1px solid #CCCCCC}
-#writer,#title,#content, #photo{font-size:9pt;font-weight:bold;color:#7F7F7F;돋움}
-input{
-	font-size:9pt;
-	border-left:1px solid #C3C3C3;
-	border-top:1px solid #C3C3C3;
-	border-right:1px solid #C3C3C3;
-	border-bottom:1px solid #C3C3C3;
-	color:#7F7F7F;돋움
-}
-#title input{width:250px;}
-#content textarea{
-width:503px;
-border:0;
-height:153;
-background:url("/board/images/write_bg.gif");
-border:#C3C3C3 1px solid 
-}
-#copyright{font-size:9pt;}
-a{text-decoration:none}
-img{border:0px}
+	#box{border:1px solid #CCCCCC}
+	#writer,#title,#content, #photo{font-size:9pt;font-weight:bold;color:#7F7F7F;돋움}
+	input{
+		font-size:9pt;
+		border-left:1px solid #C3C3C3;
+		border-top:1px solid #C3C3C3;
+		border-right:1px solid #C3C3C3;
+		border-bottom:1px solid #C3C3C3;
+		color:#7F7F7F;돋움
+	}
+	#title input{width:250px;}
+	#content textarea{
+	width:503px;
+	border:0;
+	height:153;
+	background:url("/board/images/write_bg.gif");
+	border:#C3C3C3 1px solid 
+	}
+	#copyright{font-size:9pt;}
+	a{text-decoration:none}
+	img{border:0px}
 </style>
 
 <script>

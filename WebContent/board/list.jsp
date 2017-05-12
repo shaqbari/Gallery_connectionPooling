@@ -1,5 +1,36 @@
+<%@page import="Common.file.FileManager"%>
+<%@page import="java.util.List"%>
+<%@page import="gallery.model.Gallery"%>
+<%@page import="gallery.model.GalleryDAO"%>
 <%@ page contentType="text/html;charset=utf-8"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<%! GalleryDAO dao=new GalleryDAO(); %>
+<%
+	List<Gallery>list=dao.select();
+
+%>
+<%
+	//page 처리 기법을 위한 변수 선언
+	int currentPage=1; //유저가 선택한 링크에 따라 변해야 한다.
+	if(request.getParameter("currentPage")!=null){
+		currentPage=Integer.parseInt(request.getParameter("currentPage"));
+	}
+	
+	int totalRecord=list.size(); //총 레코드 수
+	int pageSize=10; //한 페이지당 보여질 레코드 수
+	int totalPage=(int)Math.ceil((float)totalRecord/pageSize);
+	
+	int blockSize=10; //블럭당 보여질 페이지 수
+	int firstPage=currentPage-(currentPage-1)%blockSize;
+	int lastPage=firstPage+blockSize-1;
+	
+	int curPos=(currentPage-1)*pageSize; //페이지당 시작 index
+	//int num=totalRecord-(currentPage-1)*pageSize; //페이지당 시작 번호
+	int num=totalRecord-curPos; //페이지당 시작 번호
+	
+	
+%>
+
+<!DOCTYPE HTML >
 <html>
 <head>
 <title>Untitled Document</title>
@@ -23,96 +54,68 @@
 #copyright{font-size:9pt;}
 a{text-decoration:none}
 img{border:0px}
+
+.pageStyle{
+	font-size:20pt;
+	color=blue;
+	font-weight:bold;
+}
+
 </style>
 </head>
 <body>
 <table id="box" align="center" width="603" border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td colspan="5"><img src="/board/images/ceil.gif" width="603" height="25"></td>
+    <td colspan="6"><img src="/board/images/ceil.gif" width="603" height="25"></td>
   </tr>
   <tr>
-    <td height="2" colspan="5" bgcolor="#6395FA"><img src="/board/images/line_01.gif"></td>
+    <td height="2" colspan="6" bgcolor="#6395FA"><img src="/board/images/line_01.gif"></td>
   </tr>
   <tr id="title" align="center">
     <td width="50" height="20">번호</td>
+    <td width="50" height="20">이미지</td>
     <td width="303" height="20">제목</td>
     <td width="100" height="20">글쓴이</td>
     <td width="100" height="20">날짜</td>
     <td width="50" height="20">조회수</td>
   </tr>
   <tr>
-    <td height="1" colspan="5" bgcolor="#CCCCCC"></td>
+    <td height="1" colspan="6" bgcolor="#CCCCCC"></td>
   </tr>
 	<tr>	
-		<td colspan="5" id="list">
+		<td colspan="6" id="list">
 		  <table width="100%" border="0" cellpadding="0" cellspacing="0">
+		    <%for(int i=1; i<=pageSize; i++){ %>
+		    <%if(num<1) break; %>
+		    <% Gallery gallery=list.get(curPos++); %>		    
 		    <tr align="center" height="20px" onMouseOver="this.style.background='#FFFF99'" onMouseOut="this.style.background=''">
-			  <td width="50">1</td>
-			  <td width="303"><a href="detail.jsp">제목입니다.</a></td>
-			  <td width="100">관리자</td>
-			  <td width="100">2008/02/10</td>
+			  <td width="50"><%=num--%></td>
+			  <td width="50"><img src="/data/<%=gallery.getGallery_id()+"."+FileManager.getExt(gallery.getUser_filename()) %>" width="45px"></td>
+			  <td width="303"><a href="detail.jsp?gallery_id=<%=gallery.getGallery_id() %>"><%=gallery.getTitle() %></a></td>
+			  <td width="100"><%=gallery.getWriter() %></td>
+			  <td width="100"><%=gallery.getRegdate() %></td>
 			  <td width="50">5</td>
 		    </tr>
+		    <%} %>		
 			<tr>
-				<td height="1" colspan="5" background="/board/images/line_dot.gif"></td>
-			</tr>
-		    <tr align="center" height="20px" onMouseOver="this.style.background='#FFFF99'" onMouseOut="this.style.background=''">
-			  <td width="50">1</td>
-			  <td width="303">제목입니다.</td>
-			  <td width="100">관리자</td>
-			  <td width="100">2008/02/10</td>
-			  <td width="50">5</td>
-		    </tr>
-			<tr>
-				<td height="1" colspan="5" background="/board/images/line_dot.gif"></td>
-			</tr>
-		    <tr align="center" height="20px" onMouseOver="this.style.background='#FFFF99'" onMouseOut="this.style.background=''">
-			  <td width="50">1</td>
-			  <td width="303">제목입니다.</td>
-			  <td width="100">관리자</td>
-			  <td width="100">2008/02/10</td>
-			  <td width="50">5</td>
-		    </tr>
-			<tr>
-				<td height="1" colspan="5" background="/board/images/line_dot.gif"></td>
-			</tr>
-		    <tr align="center" height="20px" onMouseOver="this.style.background='#FFFF99'" onMouseOut="this.style.background=''">
-			  <td width="50">1</td>
-			  <td width="303">제목입니다.</td>
-			  <td width="100">관리자</td>
-			  <td width="100">2008/02/10</td>
-			  <td width="50">5</td>
-		    </tr>
-			<tr>
-				<td height="1" colspan="5" background="/board/images/line_dot.gif"></td>
-			</tr>
-		    <tr align="center" height="20px" onMouseOver="this.style.background='#FFFF99'" onMouseOut="this.style.background=''">
-			  <td width="50">1</td>
-			  <td width="303">제목입니다.</td>
-			  <td width="100">관리자</td>
-			  <td width="100">2008/02/10</td>
-			  <td width="50">5</td>
-		    </tr>
-			<tr>
-				<td height="1" colspan="5" background="/board/images/line_dot.gif"></td>
-			</tr>
-		    <tr align="center" height="20px" onMouseOver="this.style.background='#FFFF99'" onMouseOut="this.style.background=''">
-			  <td width="50">1</td>
-			  <td width="303">제목입니다.</td>
-			  <td width="100">관리자</td>
-			  <td width="100">2008/02/10</td>
-			  <td width="50">5</td>
-		    </tr>
-			<tr>
-				<td height="1" colspan="5" background="/board/images/line_dot.gif"></td>
+				<td height="1" colspan="6" background="/board/images/line_dot.gif"></td>
 			</tr>
 		  </table>		</td>
 	</tr>
   <tr>
-    <td id="paging" height="20" colspan="5" align="center">[1][2][3][4][5][6][7][8][9][10]</td>
+    <td id="paging" height="20" colspan="6" align="center">
+    	◀
+    	<%for(int i=firstPage; i<=lastPage; i++){ %>
+    		<%if(i>totalPage)break; %>
+    		<a <%if(currentPage==i){ %>class="pageStyle"<%} %> href="/board/list.jsp?currentPage=<%=i %>">
+    			[<%=i%>]
+    		</a>
+    	<%} %>
+    	<a href="/board/list.jsp">▶</a>
+    </td>
   </tr>
   <tr>
-    <td height="20" colspan="5" align="right" style="padding-right:2px;">
+    <td height="20" colspan="6" align="right" style="padding-right:2px;">
 	<table width="160" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td width="70">
@@ -128,12 +131,19 @@ img{border:0px}
     </table></td>
   </tr>
   <tr>
-    <td height="30" colspan="5" align="right" style="padding-right:2px;"><a href="write.jsp"><img src="/board/images/write_btin.gif" width="61" height="20" border="0"></a></td>
+    <td height="30" colspan="6" align="right" style="padding-right:2px;"><a href="write.jsp"><img src="/board/images/write_btin.gif" width="61" height="20" border="0"></a></td>
   </tr>
   <tr>
-    <td height="1" colspan="5" bgcolor="#CCCCCC"></td>
+    <td height="1" colspan="6" bgcolor="#CCCCCC"></td>
   </tr>
 	<%@ include file="/inc/Bottom.jsp" %>
 </table>
 </body>
 </html>
+
+
+
+
+
+
+
